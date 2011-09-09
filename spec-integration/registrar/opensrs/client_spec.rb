@@ -4,6 +4,7 @@ require 'httparty'
 require 'registrar/provider/opensrs'
 require 'registrar/provider/opensrs/tld_data'
 require 'registrar/provider/opensrs/tld_data_us'
+require 'registrar/provider/opensrs/name_server_list'
 
 describe "registrar client integration with opensrs" do
   let(:config) { YAML.load_file('spec-integration/opensrs.yml') }
@@ -33,10 +34,15 @@ describe "registrar client integration with opensrs" do
 
   describe "#available?" do
     context "for an available domain" do
-      it "returns true" do
-        client.available?("1283475853rwjg.com").should be_true
+      
+      sld = "test-#{Time.now.to_i}-#{rand(10000)}"
+      %w{com de us}.each do |tld|
+        it "returns true" do
+          client.available?("#{sld}.#{tld}").should be_true
+        end
       end
     end
+
     context "for an unavailable domain" do
       it "returns false" do
         client.available?("google.com").should be_false
@@ -76,6 +82,12 @@ describe "registrar client integration with opensrs" do
       end
     end
 
+    context "for an available .es" do
+      it_behaves_like "a real-time domain without extended attributes" do
+        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.es" }
+      end
+    end
+
     context "for an available .us" do
       it_behaves_like "a real-time domain with extended attributes" do
         let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.us" }
@@ -85,6 +97,41 @@ describe "registrar client integration with opensrs" do
           purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('us', :Purpose, :"Personal")
           purchase_options
         end
+      end
+    end
+
+    context 'name servers' do
+      let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.com" }
+      let(:nameserver){ Registrar::NameServer.new('ns1.dnsimple.com') }
+      let(:nameserver2){ Registrar::NameServer.new('ns2.dnsimple.com') }
+      let(:purchase_options) do
+        purchase_options = Registrar::PurchaseOptions.new
+        purchase_options.name_servers << nameserver
+        purchase_options.name_servers << nameserver2
+        purchase_options
+      end
+
+      it 'should have the nameservers assigned to the domain' do
+        client.purchase(name, registrant, purchase_options)
+        client.check_nameservers(name).should include nameserver, nameserver2
+      end
+    end
+
+    context 'setting the period of' do
+      let(:purchase_options) { Registrar::PurchaseOptions.new } 
+      %w{ 1 2 3 4 5 6 7 8 9 10 }.each do |time|
+        it "#{time} years" do
+          name = "test-#{Time.now.to_i}-#{rand(10000)}.com"
+          purchase_options.number_of_years= time
+          order = client.purchase(name, registrant, purchase_options)
+          order.should be_complete
+        end
+      end
+      it "11 years" do
+        name = "test-#{Time.now.to_i}-#{rand(10000)}.com"
+        purchase_options.number_of_years= 11
+        order = client.purchase(name, registrant, purchase_options)
+        order.should_not be_successful
       end
     end
   end
