@@ -2,8 +2,10 @@ source :rubygems
 
 gem 'httparty'
 gem 'nokogiri'
-
-gem 'rspec'
-gem 'mocha'
 gem 'tzinfo'
 gem 'builder'
+
+group :development, :test do
+  gem 'rspec'
+  gem 'mocha'
+end
