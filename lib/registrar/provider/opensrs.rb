@@ -39,6 +39,10 @@ module Registrar
         order.to_order
       end
 
+      def renew(name, renewal_options)
+
+      end
+
       def check_nameservers(name)
         operation = Operation.new(:get, {
           :domain => name, 

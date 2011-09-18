@@ -82,6 +82,10 @@ module Registrar
         order
       end
 
+      def renew(name, renewal_options)
+
+      end
+
       def order(id)
         query = base_query.merge('Command' => 'GetOrderDetail', 'OrderID' => id.to_s)
         response = execute(query)

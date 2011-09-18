@@ -1,6 +1,7 @@
 require 'registrar/contact'
 require 'registrar/domain'
 require 'registrar/purchase_options'
+require 'registrar/renewal_options'
 require 'registrar/extended_attribute'
 require 'registrar/name_server'
 require 'registrar/order'
@@ -47,11 +48,21 @@ module Registrar #:nodoc:
     #
     # name - The fully-qualified domain name to purchase.
     # registrant - A complete Registrar::Contact instance.
-    # registration_options - Optional Regisrar::RegistrationOptions instance.
+    # registration_options - Optional Registrar::RegistrationOptions instance.
     #
     # Returns a Registrar::Order
     def purchase(name, registrant, registration_options=nil)
       provider.purchase(name, registrant, registration_options)
+    end
+
+    # Renew a domain name.
+    #
+    # name - The fully-qualified domain name to renew.
+    # renewal_options - Optional Registrar::RenewalOptions instance.
+    #
+    # Returns a Registrar::Order
+    def renew(name, renewal_options=nil)
+      provider.renew(name, renewal_options)
     end
 
     # Check if the name servers of a given donain
