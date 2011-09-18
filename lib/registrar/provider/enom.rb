@@ -1,3 +1,4 @@
+require 'httparty'
 require 'tzinfo'
 
 require 'registrar/provider/enom/contact'
