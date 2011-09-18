@@ -1,8 +1,8 @@
-h1. Registrar Client
+# Registrar Client
 
 This library provides a common API for communicating with multiple registrars. This is necessary since different registrars support different TLDs and different add-on services.
 
-h2. Usage
+## Usage
 
 To construct a client, first require both the generic API interface as well as a specific provider. Construct the provider and pass it to the client interface:
 
