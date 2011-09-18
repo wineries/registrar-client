@@ -9,7 +9,8 @@ To construct a client, first require both the generic API interface as well as a
   require 'registrar'
   require 'registrar/provider/enom'
 
-  provider = Registrar::Provider::Enom.new
+  # set url, username and password to Enom API endpoint, username and password respectively
+  provider = Registrar::Provider::Enom.new(url, username, password)
   client = Registrar::Client.new(provider)
 
 To split a domain into its TLD and its remaining part:
