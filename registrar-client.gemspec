@@ -9,8 +9,10 @@ Gem::Specification.new do |s|
   s.description = "Abstract interface and implementations for working with various domain registrars."
  
   s.required_rubygems_version = ">= 1.3.6"
+
+  s.add_dependency ["httparty","tzinfo","nokogiri","builder"]
  
-  s.add_development_dependency "rspec"
+  s.add_development_dependency ["rspec","mocha"]
  
   s.files        = Dir.glob("{examples,lib}/**/*") + %w(LICENSE Readme.md Spec.md)
   s.require_path = 'lib'
