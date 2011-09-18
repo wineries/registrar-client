@@ -3,3 +3,4 @@ opensrs.yml
 .DS_Store
 .*swp
 .*un~
+*.gem
