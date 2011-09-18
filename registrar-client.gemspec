@@ -10,9 +10,13 @@ Gem::Specification.new do |s|
  
   s.required_rubygems_version = ">= 1.3.6"
 
-  s.add_dependency ["httparty","tzinfo","nokogiri","builder"]
+  s.add_dependency "httparty"
+  s.add_dependency "tzinfo"
+  s.add_dependency "nokogiri"
+  s.add_dependency "builder"
  
-  s.add_development_dependency ["rspec","mocha"]
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "mocha"
  
   s.files        = Dir.glob("{examples,lib}/**/*") + %w(LICENSE Readme.md Spec.md)
   s.require_path = 'lib'
