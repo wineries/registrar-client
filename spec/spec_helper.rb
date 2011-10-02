@@ -1,4 +1,4 @@
 require 'mocha'
 require 'rspec'
 
-require 'registrar'
+require 'registrar-client'
