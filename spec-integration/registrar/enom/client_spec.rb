@@ -60,6 +60,11 @@ describe "registrar client integration with enom" do
         domain.expiration.should_not be_nil
       end
     end
+    context "for an unregistered name" do
+      it "raises an error" do
+        lambda { client.find("jig3rjig3gr9gr.com") }.should raise_error(Registrar::RegistrarError)
+      end
+    end
   end
 
   shared_examples "a real-time domain without extended attributes" do
