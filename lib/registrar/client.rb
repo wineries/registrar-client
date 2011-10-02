@@ -32,7 +32,7 @@ module Registrar #:nodoc:
     # all parts of the domain minus the TLD. The last element is the TLD
     # string.
     def parse(name)
-      provider.parse(name)
+      provider.parse(name.downcase)
     end
 
     # Check for the availability of a domain.
@@ -41,7 +41,18 @@ module Registrar #:nodoc:
     #
     # Returns true if the name is available.
     def available?(name)
-      provider.available?(name)
+      provider.available?(name.downcase)
+    end
+
+    # Find a domain and return an object representing that domain.
+    # If the domain is not registered or is registered with another reseller then
+    # this method will return nil.
+    #
+    # name - The fully-qualified domain name.
+    #
+    # Returns a Registrar::Domain object.
+    def find(name)
+      provider.find(name.downcase)
     end
 
     # Purchase a domain name for the given registrant.
@@ -52,7 +63,7 @@ module Registrar #:nodoc:
     #
     # Returns a Registrar::Order
     def purchase(name, registrant, registration_options=nil)
-      provider.purchase(name, registrant, registration_options)
+      provider.purchase(name.downcase, registrant, registration_options)
     end
 
     # Renew a domain name.
@@ -62,7 +73,7 @@ module Registrar #:nodoc:
     #
     # Returns a Registrar::Order
     def renew(name, renewal_options=nil)
-      provider.renew(name, renewal_options)
+      provider.renew(name.downcase, renewal_options)
     end
 
     # Check if the name servers of a given donain
@@ -71,7 +82,7 @@ module Registrar #:nodoc:
     #
     # Returns a list of name servers attached to this domain
     def check_nameservers(name)
-      provider.check_nameservers(name)
+      provider.check_nameservers(name.downcase)
     end
   end
 end

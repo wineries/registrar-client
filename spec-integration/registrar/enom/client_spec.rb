@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'test_data'
+
 require 'registrar/provider/enom'
 
 describe "registrar client integration with enom" do
@@ -44,6 +46,18 @@ describe "registrar client integration with enom" do
     context "for an unavailable domain" do
       it "returns false" do
         client.available?("google.com").should be_false
+      end
+    end
+  end
+
+  describe "#find" do
+    context "for a registered name" do
+      let(:domain) { client.find(TestData.registered_domain('enom')) }
+      it "returns a domain" do
+        domain.should_not be_nil
+      end
+      it "has the expiration date" do
+        domain.expiration.should_not be_nil
       end
     end
   end

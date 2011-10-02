@@ -35,6 +35,18 @@ module Registrar
         response['RRPCode'] == '210'
       end
 
+      def find(name)
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'GetDomainInfo')
+      
+        response = execute(query.merge('SLD' => sld, 'TLD' => tld))
+        
+        domain = Registrar::Domain.new(name) 
+        domain.expiration = response['GetDomainInfo']['status']['expiration']
+        domain.registration_status = response['GetDomainInfo']['status']['registrationstatus']
+        domain
+      end
+
       def purchase(name, registrant, purchase_options=nil)
         purchase_options ||= Registrar::PurchaseOptions.new
 

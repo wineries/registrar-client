@@ -15,6 +15,7 @@ describe Registrar::Client do
 
   let(:client) { Registrar::Client.new(provider) }
   let(:name) { "example.com" }
+  let(:domain) { Registrar::Domain.new(name) }
 
   describe "#parse" do
     it "returns an array of the name parts" do
@@ -27,6 +28,13 @@ describe Registrar::Client do
     it "returns true if a domain is available" do
       provider.expects(:available?).with(name).returns(true)
       client.available?(name).should be_true
+    end
+  end
+
+  describe "#find" do
+    it "delegates to the provider" do
+      provider.expects(:find).with(name).returns(domain)
+      client.find(name).should_not be_nil
     end
   end
 
