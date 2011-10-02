@@ -109,6 +109,17 @@ module Registrar
         order
       end
 
+      def minimum_number_of_years(tld)
+        {
+          'co.uk' => 2,
+          'org.uk' => 2,
+          'nu' => 2,
+          'tm' => 10,
+          'com.mx' => 2,
+          'me.uk' => 2
+        }[tld] || 1
+      end
+
       private
       def execute(query)
         Encoding.default_internal = Encoding.default_external = "UTF-8"
@@ -124,17 +135,6 @@ module Registrar
           'PW' => password,
           'ResponseType' => 'XML'
         }
-      end
-
-      def minimum_number_of_years(tld)
-        {
-          'co.uk' => 2,
-          'org.uk' => 2,
-          'nu' => 2,
-          'tm' => 10,
-          'com.mx' => 2,
-          'me.uk' => 2
-        }[tld] || 1
       end
       
     end
