@@ -127,7 +127,7 @@ module Registrar
       
     end
 
-    class EnomError < RuntimeError
+    class EnomError < Registrar::RegistrarError 
       attr_reader :response
       attr_reader :errors
 

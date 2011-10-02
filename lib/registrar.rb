@@ -7,4 +7,8 @@ module Registrar
   # available.
   class ProviderRequiredError < RuntimeError
   end
+
+  # Base error for any errors encountered while communicating with a registrar.
+  class RegistrarError < RuntimeError
+  end
 end
