@@ -32,8 +32,14 @@ module Registrar #:nodoc:
     # all parts of the domain minus the TLD. The last element is the TLD
     # string.
     def parse(name)
-      provider.parse(name.downcase)
+      name = name.downcase
+      parse_cache[name] ||= provider.parse(name)
     end
+
+    def parse_cache
+      @parse_cache ||= {}
+    end
+    private :parse_cache
 
     # Check for the availability of a domain.
     #
