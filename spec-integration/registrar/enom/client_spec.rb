@@ -67,38 +67,6 @@ describe "registrar client integration with enom" do
     end
   end
 
-  shared_examples "a real-time domain without extended attributes" do
-    describe "#purchase" do
-      let(:order) { client.purchase(name, registrant) }
-      it "returns a completed order" do
-        order.should be_complete
-      end
-      it "has a :closed status" do
-        order.status.should eq(:closed)
-      end
-      it "has the domain in the order" do
-        order.domains.should_not be_empty
-        order.domains[0].name.should eq(name)
-      end
-    end
-  end
-
-  shared_examples "a real-time domain with extended attributes" do
-    describe "#purchase" do
-      let(:order) { client.purchase(name, registrant, purchase_options) }
-      it "returns a completed order" do
-        order.should be_complete
-      end
-      it "has a :closed status" do
-        order.status.should eq(:closed)
-      end
-      it "has the domain in the order" do
-        order.domains.should_not be_empty
-        order.domains[0].name.should eq(name)
-      end
-    end
-  end
-
   shared_examples "a non real-time domain with extended attributes" do
     describe "#purchase" do
       let(:order) { client.purchase(name, registrant, purchase_options) }
@@ -167,34 +135,34 @@ describe "registrar client integration with enom" do
         let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.biz" }
       end
     end
-    context "for an available .ca" do
-      it_behaves_like "a real-time domain with extended attributes" do
-        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.ca" }
-        let(:registrant) do
-          Registrar::Contact.new({
-            :first_name => 'Anthony',
-            :last_name => 'Eden',
-            :address_1 => '123 SW 1st Street',
-            :city => 'Anywhere',
-            :state_province => 'BC',
-            :state_province_choice => 'P',
-            :country => 'CA',
-            :postal_code => 'V6S 1P5',
-            :phone => '+14445551212',
-            :email => 'anthony@dnsimple.com'
-          })
-        end
-        let(:purchase_options) do
-          purchase_options = Registrar::PurchaseOptions.new
-          purchase_options.name_servers << Registrar::NameServer.new('ns1.dnsimple.com')
-          purchase_options.name_servers << Registrar::NameServer.new('ns2.dnsimple.com')
-          purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('ca', :"Legal Type", :"Canadian Resident")
-          purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('ca', :"Agreement Version", "2.0")
-          purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('ca', :"Agreement Value", :Yes)
-          purchase_options
-        end
-      end
-    end
+    #context "for an available .ca" do
+      #it_behaves_like "a real-time domain with extended attributes" do
+        #let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.ca" }
+        #let(:registrant) do
+          #Registrar::Contact.new({
+            #:first_name => 'Anthony',
+            #:last_name => 'Eden',
+            #:address_1 => '123 SW 1st Street',
+            #:city => 'Anywhere',
+            #:state_province => 'BC',
+            #:state_province_choice => 'P',
+            #:country => 'CA',
+            #:postal_code => 'V6S 1P5',
+            #:phone => '+14445551212',
+            #:email => 'anthony@dnsimple.com'
+          #})
+        #end
+        #let(:purchase_options) do
+          #purchase_options = Registrar::PurchaseOptions.new
+          #purchase_options.name_servers << Registrar::NameServer.new('ns1.dnsimple.com')
+          #purchase_options.name_servers << Registrar::NameServer.new('ns2.dnsimple.com')
+          #purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('ca', :"Legal Type", :"Canadian Resident")
+          #purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('ca', :"Agreement Version", "2.0")
+          #purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('ca', :"Agreement Value", :Yes)
+          #purchase_options
+        #end
+      #end
+    #end
     context "for an available .io" do
       it_behaves_like "a non real-time domain with extended attributes" do
         let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.io" }
