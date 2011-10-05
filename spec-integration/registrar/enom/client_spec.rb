@@ -126,19 +126,14 @@ describe "registrar client integration with enom" do
         let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.net" }
       end
     end
-    context "for an available .org" do
+    #context "for an available .org" do
+      #it_behaves_like "a real-time domain without extended attributes" do
+        #let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.org" }
+      #end
+    #end
+    context "for an available .me" do
       it_behaves_like "a real-time domain without extended attributes" do
-        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.org" }
-      end
-    end
-    context "for an available .info" do
-      it_behaves_like "a real-time domain without extended attributes" do
-        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.info" }
-      end
-    end
-    context "for an available .biz" do
-      it_behaves_like "a real-time domain without extended attributes" do
-        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.biz" }
+        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.me" }
       end
     end
     context "for an available .us" do
@@ -150,6 +145,26 @@ describe "registrar client integration with enom" do
           purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('us', :Purpose, :"Personal")
           purchase_options
         end
+      end
+    end
+    context "for an available .info" do
+      it_behaves_like "a real-time domain without extended attributes" do
+        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.info" }
+      end
+    end
+    context "for an available .mobi" do
+      it_behaves_like "a real-time domain without extended attributes" do
+        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.mobi" }
+      end
+    end
+    context "for an available .la" do
+      it_behaves_like "a real-time domain without extended attributes" do
+        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.la" }
+      end
+    end
+    context "for an available .biz" do
+      it_behaves_like "a real-time domain without extended attributes" do
+        let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.biz" }
       end
     end
     context "for an available .ca" do
