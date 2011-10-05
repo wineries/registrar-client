@@ -38,6 +38,13 @@ describe Registrar::Client do
     end
   end
 
+  describe "#extended_attributes" do
+    it "returns a collection of extended attribute definitions" do
+      provider.expects(:extended_attributes).with(name).returns([])
+      client.extended_attributes(name).should_not be_nil
+    end
+  end
+
   describe "#purchase" do
     let(:registrant) { Registrar::Contact.new }
     let(:order) { stub("Order") }

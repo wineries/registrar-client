@@ -2,6 +2,7 @@ require 'registrar/contact'
 require 'registrar/domain'
 require 'registrar/purchase_options'
 require 'registrar/renewal_options'
+require 'registrar/extended_attribute_descriptor'
 require 'registrar/extended_attribute'
 require 'registrar/name_server'
 require 'registrar/order'
@@ -59,6 +60,17 @@ module Registrar #:nodoc:
     # Returns a Registrar::Domain object.
     def find(name)
       provider.find(name.downcase)
+    end
+
+    # Get a set of extended attribute descriptor objects. This set can be
+    # used to determine what extended registry attributes must be collected
+    # for the given domain.
+    #
+    # name - The fully-qualified domain name.
+    # 
+    # Returns an array of Registrar::ExtendedAttribute objects.
+    def extended_attributes(name)
+      provider.extended_attributes(name)
     end
 
     # Purchase a domain name for the given registrant.
