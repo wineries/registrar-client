@@ -6,65 +6,65 @@ This library provides a common API for communicating with multiple registrars. T
 
 To construct a client, first require both the generic API interface as well as a specific provider. Construct the provider and pass it to the client interface:
 
-  require 'registrar'
-  require 'registrar/provider/enom'
+    require 'registrar'
+    require 'registrar/provider/enom'
 
-  # set url, username and password to Enom API endpoint, username and password respectively
-  provider = Registrar::Provider::Enom.new(url, username, password)
-  client = Registrar::Client.new(provider)
+    # set url, username and password to Enom API endpoint, username and password respectively
+    provider = Registrar::Provider::Enom.new(url, username, password)
+    client = Registrar::Client.new(provider)
 
 To split a domain into its TLD and its remaining part:
 
-  name = 'example.com'
-  client.parse(name)
-  => ['example','com']
+    name = 'example.com'
+    client.parse(name)
+    => ['example','com']
 
 To check the availability of a domain name for registration:
 
-  client.available?(name)
-  => true
+    client.available?(name)
+    => true
   
 To register a domain name, first construct contact:
 
-  registrant = Registrar::Contact.new(
-    :first_name => 'Anthony',
-    :last_name => 'Eden',
-    :address_1 => '123 SW 1st Street',
-    :city => 'Anywhere',
-    :country => 'US',
-    :postal_code => '12121',
-    :phone => '444 555 1212',
-    :email => 'anthony@dnsimple.com'
-  )
+    registrant = Registrar::Contact.new(
+      :first_name => 'Anthony',
+      :last_name => 'Eden',
+      :address_1 => '123 SW 1st Street',
+      :city => 'Anywhere',
+      :country => 'US',
+      :postal_code => '12121',
+      :phone => '444 555 1212',
+      :email => 'anthony@dnsimple.com'
+    )
   
 Next pass the name plus the contact (as the registrant) to the purchase method:
   
-  order = client.purchase(name, registrant)
+    order = client.purchase(name, registrant)
 
 The resulting order may be complete...
   
-  domains = order.domains if order.complete?
-  => [#<Registrar::Domain:0x10034d298>]
-  domain = domains[0]
-  => 
-  domain.name
-  => "example.com"
+    domains = order.domains if order.complete?
+    => [#<Registrar::Domain:0x10034d298>]
+    domain = domains[0]
+    => 
+    domain.name
+    => "example.com"
 
 Or the resulting order may be in process...
 
-  order.status unless order.complete?
-  => :open
+    order.status unless order.complete?
+    => :open
 
 The status of the domain may be open in cases where a domain is not registered in real-time. Quite often country-code top level domains are not real-time and require additional out-of-band processing and documentation.
 
 If you need to pass in additional purchase options:
 
-  purchase_options = Registrar::PurchaseOptions.new
-  purchase_options.name_servers << Registrar::NameServer.new('ns1.example.com')
-  purchase_options.name_servers << Registrar::NameServer.new('ns2.example.com')
-  purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('name', 'value')
-  purchase_options.number_of_years = 2
+    purchase_options = Registrar::PurchaseOptions.new
+    purchase_options.name_servers << Registrar::NameServer.new('ns1.example.com')
+    purchase_options.name_servers << Registrar::NameServer.new('ns2.example.com')
+    purchase_options.extended_attributes << Registrar::ExtendedAttribute.new('name', 'value')
+    purchase_options.number_of_years = 2
 
-  order = client.purchase(name, registrant, purchase_options)
-  domain = order.domain
-  => #<Registrar::Domain:"example.com">
+    order = client.purchase(name, registrant, purchase_options)
+    domain = order.domain
+    => #<Registrar::Domain:"example.com">
