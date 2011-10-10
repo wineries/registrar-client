@@ -1,7 +1,5 @@
 require 'httparty'
 
-require 'registrar/client'
-
 module Registrar
   # Error indicating that a registrar provider is required but none was 
   # available.
@@ -12,3 +10,5 @@ module Registrar
   class RegistrarError < RuntimeError
   end
 end
+
+require 'registrar/client'
