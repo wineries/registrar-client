@@ -81,16 +81,12 @@ module Registrar
          
         response = execute(query)
 
-        enom_order = order(response['OrderID'])
-        order = enom_order.to_order
-
         registrant.identifier = response['RegistrantPartyID']
 
         domain = Registrar::Domain.new(name) 
         domain.registrant = registrant
-        domain.order = order 
+        order = order(response['OrderID'])
         order.domains << domain
-
         order
       end
 
@@ -106,8 +102,13 @@ module Registrar
         order.order_date = response['Order']['OrderDate']
         order.order_status = response['Order']['OrderDetail']['OrderStatus']
         order.status = response['Order']['OrderDetail']['Status']
-        order
+        order.to_order
       end
+
+      def name_servers(name)
+        
+      end
+      alias :nameservers :name_servers
 
       def minimum_number_of_years(tld)
         {

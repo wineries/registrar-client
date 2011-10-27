@@ -94,13 +94,23 @@ module Registrar #:nodoc:
       provider.renew(name.downcase, renewal_options)
     end
 
-    # Check if the name servers of a given donain
+    # List name servers for a domain. 
     #
     # name - The fully-qualified domain name.
     #
     # Returns a list of name servers attached to this domain
-    def check_nameservers(name)
-      provider.check_nameservers(name.downcase)
+    def name_servers(name)
+      provider.name_servers(name.downcase)
+    end
+    alias :nameservers :name_servers
+
+    # Return the minimum number of years required to register a domain.
+    #
+    # name - The fully-qualified domain name.
+    #
+    # Returns the minimum number of years required for registration.
+    def minimum_number_of_years(name)
+      provider.minimum_number_of_years(name.downcase)
     end
   end
 end

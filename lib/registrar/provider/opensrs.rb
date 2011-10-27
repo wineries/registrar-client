@@ -43,13 +43,14 @@ module Registrar
 
       end
 
-      def check_nameservers(name)
+      def name_servers(name)
         operation = Operation.new(:get, {
           :domain => name, 
           :type => "nameservers"
         })
         nameserver_list_from(execute(operation.to_xml).body)
       end
+      alias :nameservers :name_servers
 
       private
       def nameserver_list_from(xml)

@@ -61,6 +61,12 @@ describe Registrar::Client do
         order.should_not be_nil
       end
     end
-    
+  end
+
+  describe "#name_servers" do
+    it "returns a list of name servers attached to the domain" do
+      provider.expects(:name_servers).with(name).returns([])
+      name_servers = client.name_servers(name)
+    end
   end
 end
