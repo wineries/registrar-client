@@ -47,13 +47,10 @@ describe Registrar::Provider::Enom do
       })
     end
 
-    before do
-      client.stubs(:parse).returns(['example','com'])
-    end
-
     context "for an available domain" do
       let(:response) { {'RRPCode' => '210'} }
       it "returns true" do
+        client.stubs(:parse).returns(['example','com'])
         client.expects(:execute).with(args).returns(response)
         client.available?(name).should be_true
       end
@@ -61,6 +58,7 @@ describe Registrar::Provider::Enom do
     context "for an unavailable domain" do
       let(:response) { {'RRPCode' => '211'} }
       it "returns false" do
+        client.stubs(:parse).returns(['example','com'])
         client.expects(:execute).with(args).returns(response)
         client.available?(name).should be_false
       end
@@ -68,8 +66,6 @@ describe Registrar::Provider::Enom do
   end
 
   describe "#purchase" do
-    
-
     let(:order_id) { '123456' }
     let(:registrant_party_id) { '333444555' }
     let(:registrant) do
@@ -154,5 +150,56 @@ describe Registrar::Provider::Enom do
       it_behaves_like "the domain purchase method"
     end
 
+  end
+
+  describe "#renew" do
+    let(:args) do
+      base_args.merge({
+        'Command' => 'Extend',
+        'SLD' => 'example',
+        'TLD' => 'com',
+        'NumYears' => 1
+      })
+    end
+    let(:response) { {'Extension' => 'Successful'} }
+    it "renews the domain for 1 year" do
+      client.stubs(:parse).returns(['example','com'])
+      client.expects(:execute).with(args).returns(response)
+      client.renew(name).should be_true
+    end
+  end
+
+  describe "#order" do
+
+  end
+
+  describe "#name_servers" do
+
+  end
+
+  describe "#minimum_number_of_years" do
+    context "for a standard TLD" do
+      it "returns 1" do
+        client.minimum_number_of_years('com').should eq(1)
+      end
+    end
+    it "returns 2 for co.uk" do
+      client.minimum_number_of_years('co.uk').should eq(2)
+    end
+    it "returns 2 for org.uk" do
+      client.minimum_number_of_years('org.uk').should eq(2)
+    end
+    it "returns 2 for nu" do
+      client.minimum_number_of_years('nu').should eq(2)
+    end
+    it "returns 10 for tm" do
+      client.minimum_number_of_years('tm').should eq(10)
+    end
+    it "returns 2 for com.mx" do
+      client.minimum_number_of_years('com.mx').should eq(2)
+    end
+    it "returns 2 for me.uk" do
+      client.minimum_number_of_years('me.uk').should eq(2)
+    end
   end
 end

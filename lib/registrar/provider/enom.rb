@@ -90,8 +90,13 @@ module Registrar
         order
       end
 
-      def renew(name, renewal_options)
-
+      def renew(name, renewal_options=nil)
+        renewal_options ||= Registrar::RenewalOptions.new
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'Extend', 'SLD' => sld, 'TLD' => tld)
+        query = query.merge('NumYears' => renewal_options.number_of_years)
+        response = execute(query)
+        response['Extension'] && response['Extension'].downcase == 'successful'
       end
 
       def order(id)
