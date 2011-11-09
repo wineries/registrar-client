@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "registrar-client"
-  s.version     = "0.0.4"
+  s.version     = "0.0.5"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Anthony Eden", "Enrique Comba", "Javier Acero"]
   s.email       = ["anthony.eden@dnsimple.com"]
