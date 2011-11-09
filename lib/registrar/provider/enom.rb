@@ -131,6 +131,7 @@ module Registrar
         Encoding.default_internal = Encoding.default_external = "UTF-8"
         options = {:query => query, :parser => EnomParser}
         response = self.class.get(url, options)['interface_response']
+        raise Registrar::RegistrarError.new("Response from Enom was nil") if response.nil? 
         raise EnomError.new(response) if response['ErrCount'] != '0'
         response
       end
