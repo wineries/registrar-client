@@ -67,6 +67,19 @@ describe "registrar client integration with enom" do
     end
   end
 
+  describe "#extended_attributes" do
+    context "for a TLD without extended attributes" do
+      it "returns nil" do
+        client.extended_attributes("example.com").should be_nil
+      end
+    end
+    context "for a TLD with extended attributes" do
+      it "returns an collection of extended attributes" do
+        client.extended_attributes("example.ca").should_not be_empty
+      end
+    end
+  end
+
   shared_examples "a non real-time domain with extended attributes" do
     describe "#purchase" do
       let(:order) { client.purchase(name, registrant, purchase_options) }

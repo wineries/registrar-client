@@ -115,6 +115,35 @@ module Registrar
       end
       alias :nameservers :name_servers
 
+      def extended_attributes(name)
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'GetExtAttributes', 'TLD' => tld)
+        response = execute(query)
+        pp response
+        return nil unless response['Attributes']
+        [response['Attributes']['Attribute']].flatten.map do |enom_attribute|
+          extended_attribute = Registrar::ExtendedAttributeDescriptor.new
+          extended_attribute.name = enom_attribute['Name']
+          extended_attribute.description = enom_attribute['Description']
+          extended_attribute.child = enom_attribute['IsChild'] == '1'
+          extended_attribute.required = enom_attribute['Required'] == '1'
+          extended_attribute.application = enom_attribute['Application']
+          extended_attribute.user_defined = enom_attribute['UserDefined'] == 'True'
+
+          if enom_attribute['Options']
+            extended_attribute.options = [enom_attribute['Options']['Option']].flatten.map do |enom_option|
+              option = Registrar::ExtendedAttributeOptionDescriptor.new
+              option.title = enom_option['Title']
+              option.value = enom_option['Value']
+              option.description = enom_option['Description']
+              option
+            end
+          end
+
+          extended_attribute
+        end
+      end
+
       def minimum_number_of_years(tld)
         {
           'co.uk' => 2,

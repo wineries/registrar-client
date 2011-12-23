@@ -177,6 +177,65 @@ describe Registrar::Provider::Enom do
 
   end
 
+  describe "#extended_attributes" do
+    context "for a domain without extended attributes" do
+      let(:args) do
+        base_args.merge({
+          'Command' => 'GetExtAttributes',
+          'TLD' => 'com'
+        })
+      end
+      let(:response) { Hash.new }
+      before do
+        client.stubs(:parse).returns(['example','com'])
+      end
+      it "returns nil" do
+        client.expects(:execute).with(args).returns(response)
+        client.extended_attributes("example.com").should be_nil 
+      end
+    end
+    context "for a domain with extended attributes" do
+      let(:args) do
+        base_args.merge({
+          'Command' => 'GetExtAttributes',
+          'TLD' => 'ca'
+        })
+      end
+      let(:response) do
+        {
+          'Attributes' => {
+            'Attribute' => [
+              {
+                'Name' => 'a', 
+                'Description' => 'an attribute', 
+                'Required' => '1', 
+                'Options' => [
+                  {
+                    'Option' => {}
+                  }
+                ]
+              }
+            ]
+          } 
+        }
+      end
+
+      before do
+        client.stubs(:parse).returns(['example','ca'])
+        client.expects(:execute).with(args).returns(response)
+      end
+      let(:extended_attributes) { client.extended_attributes("example.ca") }
+
+      it "returns an array of the extended attributes" do
+        extended_attributes.should_not be_empty
+      end
+
+      describe "the extended attributes" do
+
+      end
+    end
+  end
+
   describe "#minimum_number_of_years" do
     context "for a standard TLD" do
       it "returns 1" do
