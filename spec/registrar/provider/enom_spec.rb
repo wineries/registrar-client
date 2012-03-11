@@ -90,6 +90,8 @@ describe Registrar::Provider::Enom do
     let(:response) do 
       {
         'OrderID' => order_id, 
+        'IsLockable' => "True",
+        'IsRealTimeTLD' => "True",
         'RegistrantPartyID' => registrant_party_id
       }
     end

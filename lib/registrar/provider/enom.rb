@@ -168,6 +168,131 @@ module Registrar
         Enom::PricingEngine.tld_retail_transfer_price(tld)
       end
 
+      # Get a Hash of all of the contacts for the domain. The Hash will have the following
+      # key/value pairs:
+      #
+      #  * :registrant => The domain registrant
+      #  * :aux_billing => An customer specified billing contact
+      #  * :tech => The technical contact for the domain
+      #  * :admin => The administrative contact for the domain
+      #  * :billing => The Enom billing contact (DNSimple)
+      def contacts(domain)
+        sld, tld = parse(domain.name)
+        query = base_query.merge('Command' => 'GetContacts', 'TLD' => tld, 'SLD' => sld)
+
+        response = execute_command(query)
+
+        contacts = {}
+        registrant_hash = response['GetContacts']['Registrant']
+        contacts[:registrant] = Enom::Contact.from_enom('Registrant', registrant_hash)
+        aux_billing_hash = response['GetContacts']['AuxBilling']
+        contacts[:aux_billing] = Enom::Contact.from_enom('AuxBilling', aux_billing_hash) 
+
+        tech_hash = response['GetContacts']['Tech']
+        contacts[:tech] = Enom::Contact.from_enom('Tech', tech_hash)
+
+        admin_hash = response['GetContacts']['Admin']
+        contacts[:admin] = Enom::Contact.from_enom('Admin', admin_hash)
+
+        billing_hash = response['GetContacts']['Billing']
+        contacts[:billing] = Enom::Contact.from_enom('Billing', billing_hash)
+
+        contacts
+      end
+
+      # Update the registrant information for a domain. For some TLDs this will include
+      # providing extended attributes. If the TLD does not require extended attributes
+      # then send nil or an empty Hash for the extended_attributes argument.
+      def update_registrant(domain, registrant, extended_attributes=nil)
+        sld, tld = parse(domain.name)
+        query = base_query.merge(
+          'Command' => 'Contacts',
+          'TLD' => tld,
+          'SLD' => sld
+        )
+
+        query = query.merge('ContactType' => 'Registrant')
+        query = query.merge(registrant.to_query('Registrant'))
+
+        if extended_attributes
+          extended_attributes.each do |name, value| 
+            query[name] = value
+          end
+        end
+
+        response = execute_command(query) # TODO: should something else be returned here?
+      end
+
+      # Update the tech, aux billing and administrative contacts for the domain. Right
+      # now the same contact must be used for all of these contact types.
+      def update_contacts(domain, contact)
+        sld, tld = parse(domain.name)
+        base_query = base_query.merge(
+          'Command' => 'Contacts',
+          'TLD' => tld,
+          'SLD' => sld
+        )
+
+        query = base_query.merge('ContactType' => 'Tech')
+        query = query.merge(contact.to_query('Tech'))
+        response = execute_command(query)
+
+        query = base_query.merge('ContactType' => 'Admin')
+        query = query.merge(contact.to_query('Admin'))
+        response = execute_command(query)
+
+        query = base_query.merge('ContactType' => 'AuxBilling')
+        query = query.merge(contact.to_query('AuxBilling'))
+        response = execute_command(query)
+
+        contacts(domain)
+      end
+
+      # Update the tech contact for the domain.
+      def update_technical_contact(domain, contact)
+        sld, tld = parse(domain.name)
+        query = base_query.merge(
+          'Command' => 'Contacts',
+          'TLD' => tld,
+          'SLD' => sld
+        )
+
+        query = query.merge('ContactType' => 'Tech')
+        query = query.merge(contact.to_query('Tech'))
+        response = execute_command(query)
+        contacts(domain)[:tech]
+      end
+
+      # Update the admin contact for the domain.
+      def update_administrative_contact(domain, contact)
+        sld, tld = parse(domain.name)
+        base_query = base_query.merge(
+          'Command' => 'Contacts',
+          'TLD' => tld,
+          'SLD' => sld
+        )
+
+        query = base_query.merge('ContactType' => 'Admin')
+        query = query.merge(contact.to_query('Admin'))
+        response = execute_command(query)
+        contacts(domain)[:admin]
+      end
+
+      # Update the aux billing contact for the domain.
+      def update_aux_billing_contact(domain, contact)
+        sld, tld = parse(domain.name)
+        query = base_query.merge(
+          'Command' => 'Contacts',
+          'TLD' => tld,
+          'SLD' => sld
+        )
+
+        query = query.merge('ContactType' => 'AuxBilling')
+        query = query.merge(contact.to_query('AuxBilling'))
+        response = execute_command(query)
+        contacts(domain)[:aux_billing]
+      end
+
       private
       def execute(query)
         Encoding.default_internal = Encoding.default_external = "UTF-8"
