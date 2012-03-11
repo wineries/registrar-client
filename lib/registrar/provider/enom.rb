@@ -180,7 +180,7 @@ module Registrar
         sld, tld = parse(domain.name)
         query = base_query.merge('Command' => 'GetContacts', 'TLD' => tld, 'SLD' => sld)
 
-        response = execute_command(query)
+        response = execute(query)
 
         contacts = {}
         registrant_hash = response['GetContacts']['Registrant']
@@ -312,6 +312,7 @@ module Registrar
         raise EnomError.new(response) if response['ErrCount'] != '0'
         response
       end
+      alias :execute_command :execute
 
       def base_query
         {
