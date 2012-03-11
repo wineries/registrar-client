@@ -95,6 +95,7 @@ module Registrar
         domain.real_time = response['IsRealTimeTLD'].downcase == 'true'
         order = order(response['OrderID'])
         order.domains << domain
+        domain.order = order
         order
       end
 
