@@ -1,6 +1,7 @@
 module Registrar
   class PurchaseOptions
     attr_writer :name_servers
+    attr_writer :extended_attributes
     attr_writer :number_of_years
     attr_accessor :language
 
