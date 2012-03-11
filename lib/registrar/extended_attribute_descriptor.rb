@@ -15,5 +15,15 @@ module Registrar
     def initialize
       @options = []
     end
+
+     def to_hash
+      {
+        'name' => name, 
+        'description' => description,
+        'required' => required,
+        'options' => options
+      }
+    end
+
   end
 end

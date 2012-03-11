@@ -36,5 +36,11 @@ describe Registrar::ExtendedAttributeDescriptor do
   it "has options" do
     subject.options.should_not be_empty
   end
+
+  describe "#to_hash" do
+    it "is a hash with a name" do
+      subject.to_hash['name'].should eq(subject.name)
+    end
+  end
 end
 

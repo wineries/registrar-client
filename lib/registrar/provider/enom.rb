@@ -154,6 +154,10 @@ module Registrar
         }[tld] || 1
       end
 
+      def tld_retail_transfer_price(tld)
+        Enom::PricingEngine.tld_retail_transfer_price(tld)
+      end
+
       private
       def execute(query)
         Encoding.default_internal = Encoding.default_external = "UTF-8"

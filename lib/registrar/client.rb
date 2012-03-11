@@ -107,11 +107,20 @@ module Registrar #:nodoc:
 
     # Return the minimum number of years required to register a domain.
     #
-    # name - The fully-qualified domain name.
+    # tld - The TLD.
     #
     # Returns the minimum number of years required for registration.
-    def minimum_number_of_years(name)
-      provider.minimum_number_of_years(name.downcase)
+    def minimum_number_of_years(tld)
+      provider.minimum_number_of_years(tld.downcase)
+    end
+
+    # Return the retail transfer price for the given TLD.
+    #
+    # tld - The TLD.
+    #
+    # Returns the transfer price.
+    def tld_retail_transfer_price(tld)
+      provider.tld_retail_transfer_price(tld)
     end
   end
 end
