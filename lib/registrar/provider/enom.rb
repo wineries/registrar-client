@@ -247,7 +247,7 @@ module Registrar
 
         query = base_query.merge('ContactType' => 'AuxBilling')
         query = query.merge(contact.to_query('AuxBilling'))
-        response = execute_command(query)
+        response = execute(query)
 
         contacts(domain)
       end
@@ -265,7 +265,7 @@ module Registrar
 
         query = query.merge('ContactType' => 'Tech')
         query = query.merge(contact.to_query('Tech'))
-        response = execute_command(query)
+        response = execute(query)
         contacts(domain)[:tech]
       end
 
@@ -282,7 +282,7 @@ module Registrar
 
         query = base_query.merge('ContactType' => 'Admin')
         query = query.merge(contact.to_query('Admin'))
-        response = execute_command(query)
+        response = execute(query)
         contacts(domain)[:admin]
       end
 
@@ -299,7 +299,7 @@ module Registrar
 
         query = query.merge('ContactType' => 'AuxBilling')
         query = query.merge(contact.to_query('AuxBilling'))
-        response = execute_command(query)
+        response = execute(query)
         contacts(domain)[:aux_billing]
       end
 
