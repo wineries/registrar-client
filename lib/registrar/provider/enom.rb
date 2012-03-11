@@ -119,7 +119,6 @@ module Registrar
         sld, tld = parse(name)
         query = base_query.merge('Command' => 'GetExtAttributes', 'TLD' => tld)
         response = execute(query)
-        pp response
         return nil unless response['Attributes']
         [response['Attributes']['Attribute']].flatten.map do |enom_attribute|
           extended_attribute = Registrar::ExtendedAttributeDescriptor.new
