@@ -28,6 +28,10 @@ module Registrar #:nodoc:
       ![:open, :unknown].include?(@status) 
     end
 
+    def open?
+      @status == :open
+    end
+
     def successful?
       @successful
     end

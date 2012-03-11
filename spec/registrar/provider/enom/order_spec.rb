@@ -42,6 +42,12 @@ describe Registrar::Provider::Enom::Order do
     before do
       enom_order.order_status = 'open'
     end
+    it "indicates that it is open" do
+      order.should be_open
+    end
+    it "is not successful yet" do
+      order.should_not be_successful
+    end
     it "has the status of :open" do
       order.status.should eq(:open)
     end
