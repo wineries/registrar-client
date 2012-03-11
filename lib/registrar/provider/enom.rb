@@ -91,6 +91,8 @@ module Registrar
 
         domain = Registrar::Domain.new(name) 
         domain.registrant = registrant
+        domain.lockable = response['IsLockable'].downcase == 'true'
+        domain.real_time = response['IsRealTimeTLD'].downcase == 'true'
         order = order(response['OrderID'])
         order.domains << domain
         order
