@@ -204,6 +204,8 @@ module Registrar
       # providing extended attributes. If the TLD does not require extended attributes
       # then send nil or an empty Hash for the extended_attributes argument.
       def update_registrant(domain, registrant, extended_attributes=nil)
+        registrant = Enom::Contact.new(registrant)
+
         sld, tld = parse(domain.name)
         query = base_query.merge(
           'Command' => 'Contacts',
@@ -226,6 +228,8 @@ module Registrar
       # Update the tech, aux billing and administrative contacts for the domain. Right
       # now the same contact must be used for all of these contact types.
       def update_contacts(domain, contact)
+        contact = Enom::Contact.new(contact)
+
         sld, tld = parse(domain.name)
         base_query = base_query.merge(
           'Command' => 'Contacts',
@@ -250,6 +254,8 @@ module Registrar
 
       # Update the tech contact for the domain.
       def update_technical_contact(domain, contact)
+        contact = Enom::Contact.new(contact)
+
         sld, tld = parse(domain.name)
         query = base_query.merge(
           'Command' => 'Contacts',
@@ -265,6 +271,8 @@ module Registrar
 
       # Update the admin contact for the domain.
       def update_administrative_contact(domain, contact)
+        contact = Enom::Contact.new(contact)
+
         sld, tld = parse(domain.name)
         base_query = base_query.merge(
           'Command' => 'Contacts',
@@ -280,6 +288,8 @@ module Registrar
 
       # Update the aux billing contact for the domain.
       def update_aux_billing_contact(domain, contact)
+        contact = Enom::Contact.new(contact)
+
         sld, tld = parse(domain.name)
         query = base_query.merge(
           'Command' => 'Contacts',
