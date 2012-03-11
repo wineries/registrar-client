@@ -39,7 +39,7 @@ describe Registrar::ExtendedAttributeDescriptor do
 
   describe "#to_hash" do
     it "is a hash with a name" do
-      subject.to_hash['name'].should eq(subject.name)
+      subject.serializable_hash['name'].should eq(subject.name)
     end
   end
 end

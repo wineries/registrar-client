@@ -16,7 +16,7 @@ module Registrar
       @options = []
     end
 
-     def to_hash
+     def serializable_hash 
       {
         'name' => name, 
         'description' => description,
