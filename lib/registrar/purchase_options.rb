@@ -1,6 +1,8 @@
 module Registrar
   class PurchaseOptions
+    attr_writer :name_servers
     attr_writer :number_of_years
+    attr_accessor :language
 
     def has_name_servers?
       !name_servers.empty?
@@ -21,5 +23,6 @@ module Registrar
     def number_of_years
       @number_of_years ||= 1
     end
+
   end
 end

@@ -150,6 +150,22 @@ describe Registrar::Provider::Enom do
       it_behaves_like "the domain purchase method"
     end
 
+    context "with name servers specified as an array of strings" do
+      let(:args) do
+        base_purchase_args.merge(
+          'IgnoreNSFail' => 'Yes', 
+          'NS1' => 'ns1.example.com'
+        )
+
+        let(:purchase_options) do
+          purchase_options = Registrar::PurchaseOptions.new
+          purchase_options.name_servers = ['ns1.example.com']
+          purchase_options
+        end
+        it_behaves_like "the domain purchase method"
+      end
+    end
+
   end
 
   describe "#renew" do

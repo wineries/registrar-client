@@ -21,5 +21,15 @@ describe Registrar::PurchaseOptions do
       options.number_of_years= 3
       options.number_of_years.should eq 3
     end
+
+    it "sets the name servers" do
+      options.name_servers = ['ns1.example.com','ns2.example.com']
+      options.has_name_servers?.should be_true
+    end
+
+    it "has a language which can be set" do
+      options.language = "english"
+      options.language.should eq("english")
+    end
   end
 end

@@ -64,7 +64,13 @@ module Registrar
         if purchase_options.has_name_servers? 
           query['IgnoreNSFail'] = 'Yes'
           purchase_options.name_servers.each_with_index do |name_server, i|
-            query["NS#{i+1}"] = name_server.name
+            case name_server
+            when String
+              query["NS#{i+1}"] = name_server
+            else
+              query["NS#{i+1}"] = name_server.name
+            end
+            
           end
         else
           query['UseDNS'] = 'default'
