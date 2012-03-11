@@ -84,7 +84,8 @@ module Registrar
         end
 
         query['NumYears'] = purchase_options.number_of_years || minimum_number_of_years(tld)
-         
+        query['IDNCode'] = purchase_options.language if purchase_options.language
+
         response = execute(query)
 
         registrant.identifier = response['RegistrantPartyID']
