@@ -22,7 +22,7 @@ module Registrar
     end
 
     def number_of_years
-      @number_of_years ||= 1
+      @number_of_years
     end
 
   end
