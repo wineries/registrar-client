@@ -195,6 +195,10 @@ describe Registrar::Provider::Enom do
 
   end
 
+  describe "#set_name_servers" do
+    
+  end
+
   describe "#extended_attributes" do
     context "for a domain without extended attributes" do
       let(:args) do

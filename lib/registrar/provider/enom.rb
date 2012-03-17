@@ -133,10 +133,10 @@ module Registrar
         query = base_query.merge('Command' => 'ModifyNS', 'TLD' => tld, 'SLD' => sld)
 
         name_server_hash = {}
-        if ns_names.length == 0
+        if name_servers.length == 0
           name_server_hash["NS1"] = ""
         else
-          ns_names.each_with_index do |ns_name, index|
+          name_servers.each_with_index do |ns_name, index|
             name_server_hash["NS#{index + 1}"] = ns_name
           end
         end
@@ -144,7 +144,7 @@ module Registrar
 
         response = execute_command(query)
 
-        ns_names
+        name_servers
       end
 
       def extended_attributes(name)
