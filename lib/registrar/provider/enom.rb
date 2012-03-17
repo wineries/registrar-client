@@ -226,6 +226,7 @@ module Registrar
       #  * :billing => The Enom billing contact (DNSimple)
       def contacts(domain)
         sld, tld = parse(domain.name)
+        
         query = base_query.merge('Command' => 'GetContacts', 'TLD' => tld, 'SLD' => sld)
 
         response = execute(query)
@@ -279,23 +280,23 @@ module Registrar
         contact = Enom::Contact.new(contact)
 
         sld, tld = parse(domain.name)
-        base_query = base_query.merge(
+        query = base_query.merge(
           'Command' => 'Contacts',
           'TLD' => tld,
           'SLD' => sld
         )
 
-        query = base_query.merge('ContactType' => 'Tech')
-        query = query.merge(contact.to_query('Tech'))
-        response = execute_command(query)
+        tech_contact_query = query.merge('ContactType' => 'Tech')
+        tech_contact_query = tech_contact_query.merge(contact.to_query('Tech'))
+        response = execute_command(tech_contact_query)
 
-        query = base_query.merge('ContactType' => 'Admin')
-        query = query.merge(contact.to_query('Admin'))
-        response = execute_command(query)
+        admin_contact_query = base_query.merge('ContactType' => 'Admin')
+        admin_contact_query = admin_contact_query.merge(contact.to_query('Admin'))
+        response = execute_command(admin_contact_query)
 
-        query = base_query.merge('ContactType' => 'AuxBilling')
-        query = query.merge(contact.to_query('AuxBilling'))
-        response = execute(query)
+        billing_contact_query = base_query.merge('ContactType' => 'AuxBilling')
+        billing_contact_query = billing_contact_query.merge(contact.to_query('AuxBilling'))
+        response = execute(billing_contact_query)
 
         contacts(domain)
       end
