@@ -147,6 +147,32 @@ module Registrar
         name_servers
       end
 
+      def find_name_server(name)
+        query = base_query.merge('Command' => 'CheckNSStatus', 'CheckNSName' => name)
+        response = execute_command(query)
+        
+        if response['NsCheckSuccess'] == '1'
+          name_server = Registrar::NameServer.new(response['CheckNsStatus']['name'])
+          name_server.ip_address = response['CheckNsStatus']['ipaddress']
+          name_server
+        else
+          raise RuntimeError, "Name server not found for #{name}"
+        end 
+      end
+      
+      def register_name_server(name_server)
+        query = base_query.merge('Command' => 'RegisterNameServer', 'Add' => 'true', 'NSName' => name_server.name, 'IP' => name_server.ip_address)
+        response = execute_command(query)
+
+        if response['RRPCode'] == '200'
+          name_server = Registrar::NameServer.new(response['RegisterNameserver']['NS'])
+          name_server.ip_address = response['RegisterNameserver']['IP']
+          name_server
+        else
+          raise RuntimeError, "Unable to create name server: #{response['RRPText']}"
+        end
+      end
+
       def extended_attributes(name)
         sld, tld = parse(name)
         query = base_query.merge('Command' => 'GetExtAttributes', 'TLD' => tld)

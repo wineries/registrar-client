@@ -78,11 +78,20 @@ describe Registrar::Client do
     end
   end
 
-  describe "#name_servers=" do
+  describe "#set_name_servers" do
     let(:name_servers) { ['ns1.example.com', 'ns2.example.com'] }
     it "sets the name servers" do
       provider.expects(:set_name_servers).with(name, name_servers).returns(name_servers)
       client.set_name_servers(name, name_servers).should eq(name_servers)
     end
   end
+
+  describe "#find_name_server" do
+
+  end
+
+  describe "#register_name_server" do
+    
+  end
+
 end

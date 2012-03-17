@@ -115,6 +115,22 @@ module Registrar #:nodoc:
       provider.set_name_servers(name, name_servers)
     end
 
+    # Find a name server by name.
+    #
+    # name - The name server name
+    #
+    # Returns a Registrar::NameServer instance
+    def find_name_server(name)
+      provider.find_name_server(name)
+    end
+
+    # Registers a name server with various registries
+    #
+    # name_server - The NameServer to register, including IP address
+    def register_name_server(name_server)
+      provider.register_name_server(name_server)
+    end
+
     # Return the minimum number of years required to register a domain.
     #
     # tld - The TLD.
@@ -131,6 +147,30 @@ module Registrar #:nodoc:
     # Returns the transfer price.
     def tld_retail_transfer_price(tld)
       provider.tld_retail_transfer_price(tld)
+    end
+
+    def contacts(name)
+      provider.contacts(name)
+    end
+
+    def update_registrant(name, contact)
+      provider.update_registrant(name, contact)
+    end
+
+    def update_contacts(name, contact)
+      provider.update_contacts(name, contact)
+    end
+
+    def update_technical_contact(name, contact)
+      provider.update_technical_contact(name, contact)
+    end
+
+    def update_administrative_contact(name, contact)
+      provider.update_administrative_contact(name, contact)
+    end
+
+    def update_aux_billing_contact(name, contact)
+      provider.update_aux_billing_contact(name, contact)
     end
   end
 end

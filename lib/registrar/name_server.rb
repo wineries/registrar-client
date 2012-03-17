@@ -3,6 +3,7 @@ module Registrar
     include Comparable
 
     attr_reader :name
+    attr_accessor :ip_address
 
     def initialize(name)
       @name = name

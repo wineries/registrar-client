@@ -199,6 +199,14 @@ describe Registrar::Provider::Enom do
     
   end
 
+  describe "#find_name_server" do
+
+  end
+
+  describe "#register_name_server" do
+
+  end
+
   describe "#extended_attributes" do
     context "for a domain without extended attributes" do
       let(:args) do
