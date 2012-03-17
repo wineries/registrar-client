@@ -105,6 +105,16 @@ module Registrar #:nodoc:
     end
     alias :nameservers :name_servers
 
+    # Set the name servers for a given name.
+    #
+    # name - The fully-qualified domain name.
+    # name_servers - A set of name server names as strings.
+    #
+    # Returns the list of name servers
+    def set_name_servers(name, name_servers=[])
+      provider.set_name_servers(name, name_servers)
+    end
+
     # Return the minimum number of years required to register a domain.
     #
     # tld - The TLD.

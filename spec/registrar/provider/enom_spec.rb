@@ -279,4 +279,13 @@ describe Registrar::Provider::Enom do
       client.minimum_number_of_years('me.uk').should eq(2)
     end
   end
+
+  describe "#contacts" do
+    let(:domain) { stub(:domain, :name => 'example.com') }
+    let(:contacts){ client.contacts(domain) }
+
+    it "has a registrant" do
+      contacts[:registrant].should_not be_nil
+    end
+  end
 end

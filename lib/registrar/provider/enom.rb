@@ -121,9 +121,31 @@ module Registrar
       end
 
       def name_servers(name)
-        
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'GetDNS', 'TLD' => tld, 'SLD' => sld)
+        response = execute_command(query)
+        [response['dns']].flatten
       end
       alias :nameservers :name_servers
+
+      def set_name_servers(name, name_servers=[])
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'ModifyNS', 'TLD' => tld, 'SLD' => sld)
+
+        name_server_hash = {}
+        if ns_names.length == 0
+          name_server_hash["NS1"] = ""
+        else
+          ns_names.each_with_index do |ns_name, index|
+            name_server_hash["NS#{index + 1}"] = ns_name
+          end
+        end
+        query = query.merge(name_server_hash)
+
+        response = execute_command(query)
+
+        ns_names
+      end
 
       def extended_attributes(name)
         sld, tld = parse(name)
