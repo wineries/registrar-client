@@ -233,18 +233,18 @@ module Registrar
 
         contacts = {}
         registrant_hash = response['GetContacts']['Registrant']
-        contacts[:registrant] = Enom::Contact.from_enom('Registrant', registrant_hash)
+        contacts[:registrant] = Enom::Contact.from_response('Registrant', registrant_hash)
         aux_billing_hash = response['GetContacts']['AuxBilling']
         contacts[:aux_billing] = Enom::Contact.from_enom('AuxBilling', aux_billing_hash) 
 
         tech_hash = response['GetContacts']['Tech']
-        contacts[:tech] = Enom::Contact.from_enom('Tech', tech_hash)
+        contacts[:tech] = Enom::Contact.from_response('Tech', tech_hash)
 
         admin_hash = response['GetContacts']['Admin']
-        contacts[:admin] = Enom::Contact.from_enom('Admin', admin_hash)
+        contacts[:admin] = Enom::Contact.from_response('Admin', admin_hash)
 
         billing_hash = response['GetContacts']['Billing']
-        contacts[:billing] = Enom::Contact.from_enom('Billing', billing_hash)
+        contacts[:billing] = Enom::Contact.from_response('Billing', billing_hash)
 
         contacts
       end
