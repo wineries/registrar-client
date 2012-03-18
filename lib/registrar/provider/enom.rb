@@ -290,11 +290,11 @@ module Registrar
         tech_contact_query = tech_contact_query.merge(contact.to_query('Tech'))
         response = execute_command(tech_contact_query)
 
-        admin_contact_query = base_query.merge('ContactType' => 'Admin')
+        admin_contact_query = query.merge('ContactType' => 'Admin')
         admin_contact_query = admin_contact_query.merge(contact.to_query('Admin'))
         response = execute_command(admin_contact_query)
 
-        billing_contact_query = base_query.merge('ContactType' => 'AuxBilling')
+        billing_contact_query = query.merge('ContactType' => 'AuxBilling')
         billing_contact_query = billing_contact_query.merge(contact.to_query('AuxBilling'))
         response = execute(billing_contact_query)
 
