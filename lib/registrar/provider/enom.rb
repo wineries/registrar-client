@@ -323,13 +323,13 @@ module Registrar
         contact = Enom::Contact.new(contact)
 
         sld, tld = parse(domain.name)
-        base_query = base_query.merge(
+        query = base_query.merge(
           'Command' => 'Contacts',
           'TLD' => tld,
           'SLD' => sld
         )
 
-        query = base_query.merge('ContactType' => 'Admin')
+        query = query.merge('ContactType' => 'Admin')
         query = query.merge(contact.to_query('Admin'))
         response = execute(query)
         contacts(domain)[:admin]
