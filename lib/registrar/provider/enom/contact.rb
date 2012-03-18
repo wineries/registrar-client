@@ -43,7 +43,7 @@ module Registrar
         end
 
         def self.from_response(type, attributes)
-          contact = self.new
+          contact = Registrar::Contact.new
           contact.party_id = attributes["#{type}PartyID"]
           contact.address_1 = attributes["#{type}Address1"]
           contact.address_2 = attributes["#{type}Address2"]
@@ -60,7 +60,7 @@ module Registrar
           contact.postal_code = attributes["#{type}PostalCode"]
           contact.state_province = attributes["#{type}StateProvince"]
           contact.state_province_choice = attributes["#{type}StateProvinceChoice"]
-          contact
+          self.new(contact)
         end
       end
     end
