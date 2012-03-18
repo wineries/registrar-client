@@ -42,4 +42,16 @@ describe Registrar::Provider::Enom::Contact do
       query_hash["RegistrantStateProvinceChoice"].should eq(contact.state_province_choice)
     end
   end
+
+  context "from a response" do
+    let(:response) {
+      {
+        'RegistrarPartyID' => 'xxxxx11111'
+      }
+    }
+    let(:enom_contact) { Registrar::Provider::Enom::Contact.from_response('Registrar', response) }
+    it "has an identifier" do
+      enom_contact.identifier.should eq(response['RegistrarPartyID'])
+    end
+  end
 end
