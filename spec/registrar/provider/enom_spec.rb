@@ -239,11 +239,9 @@ describe Registrar::Provider::Enom do
                 'Name' => 'a', 
                 'Description' => 'an attribute', 
                 'Required' => '1', 
-                'Options' => [
-                  {
-                    'Option' => {}
-                  }
-                ]
+                'Options' => {
+                  'Option' => []
+                }
               }
             ]
           } 
@@ -292,12 +290,4 @@ describe Registrar::Provider::Enom do
     end
   end
 
-  describe "#contacts" do
-    let(:domain) { stub(:domain, :name => 'example.com') }
-    let(:contacts){ client.contacts(domain) }
-
-    it "has a registrant" do
-      contacts[:registrant].should_not be_nil
-    end
-  end
 end

@@ -62,6 +62,7 @@ module Registrar #:nodoc:
     def find(name)
       provider.find(name.downcase)
     end
+    alias :find_domain :find
 
     # Get a set of extended attribute descriptor objects. This set can be
     # used to determine what extended registry attributes must be collected
@@ -83,6 +84,15 @@ module Registrar #:nodoc:
     # Returns a Registrar::Order
     def purchase(name, registrant, registration_options=nil)
       provider.purchase(name.downcase, registrant, registration_options)
+    end
+
+    # Get the order identified by the given ID
+    #
+    # id - The order ID
+    # 
+    # Returns a Registrar::Order
+    def order(id)
+      provider.order(id)
     end
 
     # Renew a domain name.

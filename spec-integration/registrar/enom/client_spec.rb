@@ -96,7 +96,7 @@ describe "registrar client integration with enom" do
     end
   end
 
-  describe "#purchase" do
+  describe "domain purchase and renewal" do
     context "for an available .com" do
       it_behaves_like "a real-time domain without extended attributes" do
         let(:name) { "test-#{Time.now.to_i}-#{rand(10000)}.com" }
@@ -187,5 +187,5 @@ describe "registrar client integration with enom" do
       end
     end
   end
-  
+
 end

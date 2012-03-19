@@ -9,8 +9,8 @@ describe Registrar::PurchaseOptions do
     it "does not specify extended attributes" do
       subject.has_extended_attributes?.should be_false
     end
-    it "returns 1 for number of years" do
-      subject.number_of_years.should eq 1
+    it "returns nil for number of years as it is up to the registrar to provide" do
+      subject.number_of_years.should be_nil
     end
   end
 
