@@ -109,6 +109,29 @@ module Registrar
         response['Extension'] && response['Extension'].downcase == 'successful'
       end
 
+      def auto_renew?(name)
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'GetRenew', 'TLD' => tld, 'SLD' => sld)
+        response = execute_command(query)
+        response['auto_renew'] == '1'
+      end
+
+      def enable_auto_renewal(name)
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'SetRenew', 'TLD' => tld, 'SLD' => sld)
+        query = query.merge('RenewFlag' => '1')
+        response = execute_command(query)
+        response['RenewName'] == 'True'
+      end
+
+      def disable_auto_renewal(name)
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'SetRenew', 'TLD' => tld, 'SLD' => sld)
+        query = query.merge('RenewFlag' => '0')
+        response = execute_command(query)
+        response['RenewName'] == 'False'
+      end
+
       def order(id)
         query = base_query.merge('Command' => 'GetOrderDetail', 'OrderID' => id.to_s)
         response = execute(query)

@@ -105,6 +105,35 @@ module Registrar #:nodoc:
       provider.renew(name.downcase, renewal_options)
     end
 
+    # Return true if the domain is set up for auto renewal
+    #
+    # name - The fully-qualified domain name
+    #
+    # Returns true if the domain should be auto renewed by the registrar
+    def auto_renew?(name)
+      provider.auto_renew?(name)
+    end
+
+    # Enable auto-renewal for a domain
+    #
+    # name - The name to auto renew
+    #
+    # Returns true of auto-renewal was enabled
+    def enable_auto_renewal(name)
+      provider.enable_auto_renewal(name) 
+    end
+    alias :enable_auto_renew :enable_auto_renewal
+
+    # Disable auto-renewal for a domain
+    #
+    # name - The name that has auto renewal enabled
+    #
+    # Returns true if the auto-renewal was disabled
+    def disable_auto_renewal(name)
+      provider.disable_auto_renewal(name) 
+    end
+    alias :disable_auto_renew :disable_auto_renewal
+
     # List name servers for a domain. 
     #
     # name - The fully-qualified domain name.
