@@ -95,6 +95,15 @@ module Registrar #:nodoc:
       provider.order(id)
     end
 
+    # Get the most recent order for the given name
+    # 
+    # name - The fully-qualified domain name
+    #
+    # Returns a Registrar::Order instance
+    def order_for_domain(name)
+      provider.order_for_domain(name)
+    end
+
     # Renew a domain name.
     #
     # name - The fully-qualified domain name to renew.
