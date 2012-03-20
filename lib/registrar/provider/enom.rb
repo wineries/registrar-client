@@ -44,6 +44,7 @@ module Registrar
         domain = Registrar::Domain.new(name) 
         domain.expiration = response['GetDomainInfo']['status']['expiration']
         domain.registration_status = response['GetDomainInfo']['status']['registrationstatus']
+        domain.order = order(name)
         domain
       end
 
