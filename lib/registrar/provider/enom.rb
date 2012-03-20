@@ -44,7 +44,7 @@ module Registrar
         domain = Registrar::Domain.new(name) 
         domain.expiration = response['GetDomainInfo']['status']['expiration']
         domain.registration_status = response['GetDomainInfo']['status']['registrationstatus']
-        domain.order = order(name)
+        domain.order = order_for_domain(name)
         domain
       end
 
@@ -142,6 +142,13 @@ module Registrar
         order.order_status = response['Order']['OrderDetail']['OrderStatus']
         order.status = response['Order']['OrderDetail']['Status']
         order.to_order
+      end
+
+      def order_for_domain(name)
+        sld, tld = parse(name)
+        query = base_query.merge('Command' => 'GetDomainStatus', 'SLD' => sld, 'TLD' => tld)
+        response = execute_command(query)
+        order(response['DomainStatus']['OrderID'])
       end
 
       def name_servers(name)
