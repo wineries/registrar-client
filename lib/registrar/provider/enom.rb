@@ -217,6 +217,7 @@ module Registrar
           extended_attribute.required = enom_attribute['Required'] == '1'
           extended_attribute.application = enom_attribute['Application']
           extended_attribute.user_defined = enom_attribute['UserDefined'] == 'True'
+          extended_attribute.apply_to_registrar = enom_attribute['Application'] == '2'
 
           if enom_attribute['Options']
             extended_attribute.options = [enom_attribute['Options']['Option']].flatten.map do |enom_option|

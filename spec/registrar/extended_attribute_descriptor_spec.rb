@@ -11,6 +11,7 @@ describe Registrar::ExtendedAttributeDescriptor do
     d.required = true
     d.application = "2"
     d.user_defined = true
+    d.apply_to_registrar = true
     d.options << Registrar::ExtendedAttributeOptionDescriptor.new
     d
   end
@@ -29,6 +30,9 @@ describe Registrar::ExtendedAttributeDescriptor do
   end
   it "has an application value" do
     subject.application.should eq("2")
+  end
+  it "is applied to registrar" do
+    subject.should be_apply_to_registrar
   end
   it "is user defined" do
     subject.should be_user_defined
