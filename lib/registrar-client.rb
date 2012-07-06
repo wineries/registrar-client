@@ -1,1 +1,1 @@
-require 'registrar'
+require 'registrar_client'
