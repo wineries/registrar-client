@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   class PurchaseOptions
     attr_writer :name_servers
     attr_writer :extended_attributes

@@ -1,11 +1,11 @@
 require 'httparty'
 require 'tzinfo'
 
-require 'registrar/provider/enom/contact'
-require 'registrar/provider/enom/extended_attribute'
-require 'registrar/provider/enom/order'
+require 'registrar_client/provider/enom/contact'
+require 'registrar_client/provider/enom/extended_attribute'
+require 'registrar_client/provider/enom/order'
 
-module Registrar
+module RegistrarClient
   module Provider
     # Implementation of a registrar provider for Enom (http://www.enom.com/).
     class Enom
@@ -41,7 +41,7 @@ module Registrar
       
         response = execute(query.merge('SLD' => sld, 'TLD' => tld))
         
-        domain = Registrar::Domain.new(name) 
+        domain = RegistrarClient::Domain.new(name) 
         domain.expiration = response['GetDomainInfo']['status']['expiration']
         domain.registration_status = response['GetDomainInfo']['status']['registrationstatus']
         domain.order = order_for_domain(name)
@@ -49,7 +49,7 @@ module Registrar
       end
 
       def purchase(name, registrant, purchase_options=nil)
-        purchase_options ||= Registrar::PurchaseOptions.new
+        purchase_options ||= RegistrarClient::PurchaseOptions.new
 
         sld, tld = parse(name)
         query = base_query.merge('Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld)
@@ -91,7 +91,7 @@ module Registrar
 
         registrant.identifier = response['RegistrantPartyID']
 
-        domain = Registrar::Domain.new(name) 
+        domain = RegistrarClient::Domain.new(name) 
         domain.registrant = registrant
         domain.lockable = response['IsLockable'].downcase == 'true'
         domain.real_time = response['IsRealTimeTLD'].downcase == 'true'
@@ -102,7 +102,7 @@ module Registrar
       end
 
       def renew(name, renewal_options=nil)
-        renewal_options ||= Registrar::RenewalOptions.new
+        renewal_options ||= RegistrarClient::RenewalOptions.new
         sld, tld = parse(name)
         query = base_query.merge('Command' => 'Extend', 'SLD' => sld, 'TLD' => tld)
         query = query.merge('NumYears' => renewal_options.number_of_years)
@@ -183,7 +183,7 @@ module Registrar
         response = execute_command(query)
         
         if response['NsCheckSuccess'] == '1'
-          name_server = Registrar::NameServer.new(response['CheckNsStatus']['name'])
+          name_server = RegistrarClient::NameServer.new(response['CheckNsStatus']['name'])
           name_server.ip_address = response['CheckNsStatus']['ipaddress']
           name_server
         else
@@ -196,7 +196,7 @@ module Registrar
         response = execute_command(query)
 
         if response['RRPCode'] == '200'
-          name_server = Registrar::NameServer.new(response['RegisterNameserver']['NS'])
+          name_server = RegistrarClient::NameServer.new(response['RegisterNameserver']['NS'])
           name_server.ip_address = response['RegisterNameserver']['IP']
           name_server
         else
@@ -210,7 +210,7 @@ module Registrar
         response = execute(query)
         return nil unless response['Attributes']
         [response['Attributes']['Attribute']].flatten.map do |enom_attribute|
-          extended_attribute = Registrar::ExtendedAttributeDescriptor.new
+          extended_attribute = RegistrarClient::ExtendedAttributeDescriptor.new
           extended_attribute.name = enom_attribute['Name']
           extended_attribute.description = enom_attribute['Description']
           extended_attribute.child = enom_attribute['IsChild'] == '1'
@@ -221,7 +221,7 @@ module Registrar
 
           if enom_attribute['Options']
             extended_attribute.options = [enom_attribute['Options']['Option']].flatten.map do |enom_option|
-              option = Registrar::ExtendedAttributeOptionDescriptor.new
+              option = RegistrarClient::ExtendedAttributeOptionDescriptor.new
               option.title = enom_option['Title']
               option.value = enom_option['Value']
               option.description = enom_option['Description']
@@ -389,7 +389,7 @@ module Registrar
         Encoding.default_internal = Encoding.default_external = "UTF-8"
         options = {:query => query, :parser => EnomParser}
         response = self.class.get(url, options)['interface_response']
-        raise Registrar::RegistrarError.new("Response from Enom was nil") if response.nil? 
+        raise RegistrarClient::RegistrarError.new("Response from Enom was nil") if response.nil? 
         raise EnomError.new(response) if response['ErrCount'] != '0'
         response
       end
@@ -405,7 +405,7 @@ module Registrar
       
     end
 
-    class EnomError < Registrar::RegistrarError 
+    class EnomError < RegistrarClient::RegistrarError 
       attr_reader :response
       attr_reader :errors
 

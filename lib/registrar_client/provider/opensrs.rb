@@ -1,12 +1,12 @@
 require 'digest/md5'
 require 'builder'
 require 'nokogiri'
-require 'registrar/provider/opensrs/order'
-require 'registrar/provider/opensrs/operation'
-require 'registrar/provider/opensrs/contact'
-require 'registrar/provider/opensrs/contact_set'
+require 'registrar_client/provider/opensrs/order'
+require 'registrar_client/provider/opensrs/operation'
+require 'registrar_client/provider/opensrs/contact'
+require 'registrar_client/provider/opensrs/contact_set'
 
-module Registrar
+module RegistrarClient
   module Provider
     # Implementation of a registrar provider for OpenSRS (http://www.opensrs.com/).
     class OpenSRS
@@ -31,7 +31,7 @@ module Registrar
       end
 
       def purchase(name, registrant, purchase_options=nil)
-        purchase_options ||= Registrar::PurchaseOptions.new
+        purchase_options ||= RegistrarClient::PurchaseOptions.new
         response = execute(registration_operation(name, registrant, 
                                                   purchase_options).to_xml)
         order = check_order(response.body)
@@ -55,13 +55,13 @@ module Registrar
       private
       def nameserver_list_from(xml)
         Nokogiri::XML(xml).xpath('//dt_array/item/dt_assoc/item[@key="name"]').map do |item|
-          Registrar::NameServer.new(item.content)
+          RegistrarClient::NameServer.new(item.content)
         end
       end
 
       def check_order(xml)
         order_info = execute(order_info_operation(order_id_from(xml)).to_xml)
-        Registrar::Provider::OpenSRS::Order.new(order_info.to_s)
+        RegistrarClient::Provider::OpenSRS::Order.new(order_info.to_s)
       end
 
       def order_id_from(xml)

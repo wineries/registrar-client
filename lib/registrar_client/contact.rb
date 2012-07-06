@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   class Contact
     attr_accessor :identifier
     attr_accessor :first_name

@@ -11,4 +11,4 @@ module Registrar
   end
 end
 
-require 'registrar/client'
+require 'registrar_client/client'

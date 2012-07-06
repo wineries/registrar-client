@@ -1,8 +1,8 @@
-require 'registrar/provider/enom/extended_attribute_us'
-require 'registrar/provider/enom/extended_attribute_ca'
-require 'registrar/provider/enom/extended_attribute_io'
+require 'registrar_client/provider/enom/extended_attribute_us'
+require 'registrar_client/provider/enom/extended_attribute_ca'
+require 'registrar_client/provider/enom/extended_attribute_io'
 
-module Registrar
+module RegistrarClient
   module Provider
     class Enom
       # Wrapper around the generic extended attribute that resolves symbolic values

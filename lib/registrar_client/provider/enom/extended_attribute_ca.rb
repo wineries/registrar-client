@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   module Provider
     class Enom
       module ExtendedAttributeCA

@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   class NameServer
     include Comparable
 

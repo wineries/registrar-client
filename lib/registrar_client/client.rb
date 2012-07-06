@@ -1,14 +1,14 @@
-require 'registrar/contact'
-require 'registrar/domain'
-require 'registrar/purchase_options'
-require 'registrar/renewal_options'
-require 'registrar/extended_attribute_descriptor'
-require 'registrar/extended_attribute_option_descriptor'
-require 'registrar/extended_attribute'
-require 'registrar/name_server'
-require 'registrar/order'
+require 'registrar_client/contact'
+require 'registrar_client/domain'
+require 'registrar_client/purchase_options'
+require 'registrar_client/renewal_options'
+require 'registrar_client/extended_attribute_descriptor'
+require 'registrar_client/extended_attribute_option_descriptor'
+require 'registrar_client/extended_attribute'
+require 'registrar_client/name_server'
+require 'registrar_client/order'
 
-module Registrar #:nodoc:
+module RegistrarClient #:nodoc:
   # This class provides a generic client interface for accessing domain
   # registrars as a domain reseller. The interface provides methods for 
   # checking domain availability, registering domain names and finding

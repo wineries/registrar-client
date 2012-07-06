@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   class Domain
     attr_reader :name
 

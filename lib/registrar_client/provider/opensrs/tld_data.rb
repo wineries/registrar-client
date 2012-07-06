@@ -1,6 +1,6 @@
-require 'registrar/provider/opensrs/tld_data_us'
+require 'registrar_client/provider/opensrs/tld_data_us'
 
-module Registrar
+module RegistrarClient
   module Provider
     class OpenSRS
       class TldData

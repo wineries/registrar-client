@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   class ExtendedAttributeOptionDescriptor
     attr_accessor :title
     attr_accessor :value

@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   module Provider
     class Enom
       # An Enom order.
@@ -22,7 +22,7 @@ module Registrar
 
         # Get a generic Registrar::Order object to use.
         def to_order
-          order = Registrar::Order.new(id)
+          order = RegistrarClient::Order.new(id)
           order.successful = status.downcase == "successful"
           
           order.status = case order_status.downcase

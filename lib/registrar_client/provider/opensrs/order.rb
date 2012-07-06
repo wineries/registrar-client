@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   module Provider
     class OpenSRS
       class Order
@@ -31,7 +31,7 @@ module Registrar
         end
 
         def to_order
-          order = Registrar::Order.new(id)
+          order = RegistrarClient::Order.new(id)
           order.successful= successful?
           order.status= complete? ? :closed : :open
           domains.each { |domain| order.domains<< domain }
@@ -40,7 +40,7 @@ module Registrar
 
         private
         def create_domain(domain_name, registrant)
-          domain = Registrar::Domain.new(domain_name)
+          domain = RegistrarClient::Domain.new(domain_name)
           domain.registrant = registrant
           domain.order = self
           domain

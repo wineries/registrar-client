@@ -1,4 +1,4 @@
-module Registrar
+module RegistrarClient
   class RenewalOptions
     attr_accessor :number_of_years
     def initialize
