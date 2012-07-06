@@ -43,7 +43,7 @@ module RegistrarClient
         end
 
         def self.from_response(type, attributes)
-          contact = Registrar::Contact.new
+          contact = RegistrarClient::Contact.new
           contact.identifier = attributes["#{type}PartyID"]
           contact.address_1 = attributes["#{type}Address1"]
           contact.address_2 = attributes["#{type}Address2"]
