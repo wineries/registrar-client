@@ -1,6 +1,6 @@
 require 'httparty'
 
-module Registrar
+module RegistrarClient
   # Error indicating that a registrar provider is required but none was 
   # available.
   class ProviderRequiredError < RuntimeError
