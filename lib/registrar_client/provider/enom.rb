@@ -139,8 +139,15 @@ module RegistrarClient
 
         order = Enom::Order.new(response['Order']['OrderID'])
         order.order_date = response['Order']['OrderDate']
-        order.order_status = response['Order']['OrderDetail']['OrderStatus']
-        order.status = response['Order']['OrderDetail']['Status']
+        order_details = response['Order']['OrderDetail']
+        case order_details
+        when Array
+          order.order_status = order_details.last['OrderStatus']
+          order.status = order_details.last['Status']
+        else
+          order.order_status = order_details['OrderStatus']
+          order.status = order_details['Status']
+        end
         order.to_order
       end
 

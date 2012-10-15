@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'registrar/provider/enom'
+require 'registrar_client/provider/enom'
 
-describe Registrar::Provider::Enom do
+describe RegistrarClient::Provider::Enom do
   let(:url) { "http://provider/api" }
   let(:username) { "client_username" }
   let(:password) { "client_password" }
-  let(:client) { Registrar::Provider::Enom.new(url, username, password) }
+  let(:client) { RegistrarClient::Provider::Enom.new(url, username, password) }
 
   it "is initialized with the url, username and password" do
     lambda { client }.should_not raise_error
@@ -69,7 +69,7 @@ describe Registrar::Provider::Enom do
     let(:order_id) { '123456' }
     let(:registrant_party_id) { '333444555' }
     let(:registrant) do
-      Registrar::Contact.new(
+      RegistrarClient::Contact.new(
         :identifier => '12345',
         :first_name => 'John',
         :last_name => 'Doe',
@@ -84,7 +84,7 @@ describe Registrar::Provider::Enom do
       )
     end
     let(:enom_registrant) do
-      Registrar::Provider::Enom::Contact.new(registrant)
+      RegistrarClient::Provider::Enom::Contact.new(registrant)
     end
 
     let(:response) do 
@@ -97,7 +97,7 @@ describe Registrar::Provider::Enom do
     end
 
     let(:order) do
-      order = Registrar::Provider::Enom::Order.new(order_id)
+      order = RegistrarClient::Provider::Enom::Order.new(order_id)
       order.status = 'Successful'
       order.order_status = 'Complete'
       order
@@ -145,8 +145,8 @@ describe Registrar::Provider::Enom do
       end
 
       let(:purchase_options) do
-        purchase_options = Registrar::PurchaseOptions.new
-        purchase_options.name_servers << Registrar::NameServer.new('ns1.example.com')
+        purchase_options = RegistrarClient::PurchaseOptions.new
+        purchase_options.name_servers << RegistrarClient::NameServer.new('ns1.example.com')
         purchase_options
       end
       it_behaves_like "the domain purchase method"
@@ -160,7 +160,7 @@ describe Registrar::Provider::Enom do
         )
 
         let(:purchase_options) do
-          purchase_options = Registrar::PurchaseOptions.new
+          purchase_options = RegistrarClient::PurchaseOptions.new
           purchase_options.name_servers = ['ns1.example.com']
           purchase_options
         end
@@ -188,7 +188,68 @@ describe Registrar::Provider::Enom do
   end
 
   describe "#order" do
+    let(:order_id) { 123456 }
+    let(:order_status) { 'Closed' }
+    let(:status) { 'Successful' }
+    let(:order) { client.order(order_id) }
 
+    let(:args) do
+      base_args.merge({
+        'Command' => 'GetOrderDetail',
+        'OrderID' => order_id.to_s
+      })
+    end
+     
+    context "with a single order detail" do
+      let(:response) do
+        {
+          'Order' => {
+            'OrderId' => order_id.to_s,
+            'OrderDetail' => {
+              'OrderStatus' => order_status,
+              'Status' => status 
+            }
+          }
+        }
+      end
+      
+      it "returns the order" do
+        client.expects(:execute).with(args).returns(response)
+        order.should_not be_nil
+      end
+      it "returns the order with the correct status" do
+        client.expects(:execute).with(args).returns(response)
+        order.status.should eq(:closed)
+      end
+    end
+    context "with an array of order details" do
+      let(:response) do
+        {
+          'Order' => {
+            'OrderId' => order_id.to_s,
+            'OrderDetail' => [
+              {
+                'OrderStatus' => 'Open',
+                'Status' => 'In Process'
+              },
+              {
+                'OrderStatus' => order_status,
+                'Status' => status 
+              }
+            ]
+          }
+        }
+      end
+      
+      it "returns the order" do
+        client.expects(:execute).with(args).returns(response)
+        order.should_not be_nil
+      end
+      it "returns the order with the correct status" do
+        client.expects(:execute).with(args).returns(response)
+        order.status.should eq(:closed)
+      end
+    end
   end
 
   describe "#name_servers" do
